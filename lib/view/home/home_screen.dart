@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:student_provider/constants/colors.dart';
 import 'package:student_provider/constants/space.dart';
+import 'package:student_provider/view/add_and_edit/register_add_and_edit_screen.dart';
 import 'package:student_provider/view/home/widget/card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,8 +12,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController searchController = TextEditingController();
     return Scaffold(
-      backgroundColor: kblack,
+      backgroundColor: kgreenAccent,
       appBar: AppBar(
+        backgroundColor: kgreenAccent,
+        elevation: 0,
         title: const Text('Student Register'),
         // actions: <Widget>[
         //   IconButton(
@@ -24,13 +27,13 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: Column(
             children: [
+              kheight5,
               Padding(
                 padding: const EdgeInsets.only(left: 3, right: 3),
                 child: SizedBox(
                   height: 45,
                   child: CupertinoSearchTextField(
-                    backgroundColor: kSerchBarColor,
-                    style: const TextStyle(color: kwhite),
+                    style: const TextStyle(color: kblack12),
                     controller: searchController,
                     onChanged: (value) {},
                   ),
@@ -51,7 +54,14 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    RegisterAddAndEditScreen(action: ActionType.add),
+              ));
+        },
         child: const Icon(CupertinoIcons.person_add),
       ),
     );

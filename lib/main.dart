@@ -17,13 +17,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: kwhite,
-          foregroundColor: kblack,
+          backgroundColor: kblack,
+          foregroundColor: kwhite,
         ),
         appBarTheme: AppBarTheme(
-            backgroundColor: kblack,
-            titleTextStyle: text20WhiteBold,
-            iconTheme: const IconThemeData(color: kwhite),
+            backgroundColor: kgreenAccent,
+            titleTextStyle: text20BlackBold,
+            iconTheme: const IconThemeData(color: kblack),
             elevation: 0),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
