@@ -5,3 +5,4 @@ const kwhite = Colors.white;
 const kblack = Colors.black;
 const kgrey = Colors.grey;
 const kbuttonColor = Color(0xFFFF3D08);
+final kSerchBarColor = Colors.grey[900];
