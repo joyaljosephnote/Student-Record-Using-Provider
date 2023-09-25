@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_provider/constants/colors.dart';
 import 'package:student_provider/constants/style.dart';
-import 'package:student_provider/view/add_and_edit/register_add_and_edit_screen.dart';
+import 'package:student_provider/view/add_and_edit/student_add_and_edit_screen.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({super.key});
@@ -12,8 +12,7 @@ class CardWidget extends StatelessWidget {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                RegisterAddAndEditScreen(action: ActionType.edit),
+            builder: (context) => StudentAddAndEdit(action: ActionType.edit),
           )),
       child: Card(
         color: kblack12,

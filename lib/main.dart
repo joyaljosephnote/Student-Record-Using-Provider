@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_provider/constants/colors.dart';
 import 'package:student_provider/constants/style.dart';
+import 'package:student_provider/controller/database/db_functions.dart';
+import 'package:student_provider/controller/provider/student_model_provider.dart';
 import 'package:student_provider/view/home/home_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DB sql = DB();
+  await sql.initialiseDatabase();
+  runApp(ChangeNotifierProvider(
+      create: (_) => StudentModelProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

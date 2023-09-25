@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:student_provider/constants/colors.dart';
 import 'package:student_provider/constants/space.dart';
-import 'package:student_provider/view/add_and_edit/register_add_and_edit_screen.dart';
+import 'package:student_provider/view/add_and_edit/student_add_and_edit_screen.dart';
 import 'package:student_provider/view/home/widget/card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,10 +17,6 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: kgreenAccent,
         elevation: 0,
         title: const Text('Student Register'),
-        // actions: <Widget>[
-        //   IconButton(
-        //       onPressed: () {}, icon: const Icon(CupertinoIcons.person_add))
-        // ],
       ),
       body: SafeArea(
         child: Padding(
@@ -46,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, mainAxisSpacing: 1, crossAxisSpacing: 1),
                 itemBuilder: (context, index) {
-                  return CardWidget();
+                  return const CardWidget();
                 },
               )),
             ],
@@ -58,8 +54,7 @@ class HomeScreen extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    RegisterAddAndEditScreen(action: ActionType.add),
+                builder: (context) => StudentAddAndEdit(action: ActionType.add),
               ));
         },
         child: const Icon(CupertinoIcons.person_add),
