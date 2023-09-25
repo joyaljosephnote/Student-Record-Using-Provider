@@ -32,9 +32,11 @@ class HomeScreen extends StatelessWidget {
                 child: SizedBox(
                   height: 45,
                   child: CupertinoSearchTextField(
-                    style: const TextStyle(color: kblack12),
+                    style: const TextStyle(color: kblack),
                     controller: searchController,
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      context.read<StudentModelProvider>().getStudents(value);
+                    },
                   ),
                 ),
               ),
@@ -60,6 +62,7 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          clear();
           Navigator.push(
               context,
               MaterialPageRoute(

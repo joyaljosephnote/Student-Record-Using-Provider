@@ -8,3 +8,4 @@ const kblack12 = Colors.black12;
 const kgrey = Colors.grey;
 const kbuttonColor = Color(0xFFFF3D08);
 final kSerchBarColor = Colors.grey[200];
+const Color kThemeColorGreen = Color.fromARGB(255, 234, 56, 16);

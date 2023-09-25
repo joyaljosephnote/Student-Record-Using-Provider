@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ import 'package:student_provider/controller/database/db_functions.dart';
 import 'package:student_provider/controller/functions/validator.dart';
 import 'package:student_provider/controller/provider/student_model_provider.dart';
 import 'package:student_provider/model/student_model.dart';
+import 'package:student_provider/view/add_and_edit/widget/snack_bar_message.dart';
 import 'package:student_provider/view/add_and_edit/widget/student_profile_image.dart';
 
 enum ActionType {
@@ -42,6 +44,21 @@ class StudentAddAndEdit extends StatelessWidget {
         title: action == ActionType.add
             ? const Text('Add Student')
             : const Text('Edit Student'),
+        actions: [
+          action == ActionType.add
+              ? IconButton(
+                  onPressed: () => clear(),
+                  icon: const Icon(CupertinoIcons.delete_simple))
+              : IconButton(
+                  onPressed: () async {
+                    await context
+                        .read<StudentModelProvider>()
+                        .deleteModel(model?.id as int);
+                    snacMasage(context, 'Student Data Deleted');
+                    clear();
+                  },
+                  icon: const Icon(CupertinoIcons.delete_simple))
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -66,12 +83,14 @@ class StudentAddAndEdit extends StatelessWidget {
                   ),
                   kheight30,
                   TextFormField(
+                    textCapitalization: TextCapitalization.words,
                     validator: (value) => nameValidator(value),
                     controller: nameController,
                     decoration: textFormFeild('Full Name'),
                   ),
                   kheight20,
                   TextFormField(
+                    textCapitalization: TextCapitalization.words,
                     validator: (value) => nameValidator(value),
                     controller: parentNameController,
                     decoration: textFormFeild('Parent Name'),
@@ -96,34 +115,39 @@ class StudentAddAndEdit extends StatelessWidget {
                     foregroundColor: Colors.white,
                     onPressed: () async {
                       if (action == ActionType.add) {
-                        if (_formKey.currentState!.validate()) {
-                          final student = Student(
-                            name: nameController.text.trim(),
-                            parentName: parentNameController.text.trim(),
-                            age: ageController.text.trim(),
-                            mobileNumber: mobileNumberController.text.trim(),
-                            image: image.value,
-                          );
-                          await context
-                              .read<StudentModelProvider>()
-                              .addOrEdit(student, action == ActionType.edit);
-                          Navigator.of(context).pop();
-                          clear();
+                        if (image.value != null) {
+                          if (_formKey.currentState!.validate()) {
+                            final student = Student(
+                                name: nameController.text.trim(),
+                                parentName: parentNameController.text.trim(),
+                                age: ageController.text.trim(),
+                                mobileNumber:
+                                    mobileNumberController.text.trim(),
+                                image: image.value);
+                            await context
+                                .read<StudentModelProvider>()
+                                .addOrEdit(student, action == ActionType.edit);
+                            Navigator.of(context).pop();
+                            snacMasage(context, 'Student Data Saved');
+                            clear();
+                          }
+                        } else {
+                          snacMasage(context, 'Upload image and Contiue');
                         }
                       } else {
                         if (_formKey.currentState!.validate()) {
                           final student = Student(
-                            id: model?.id,
-                            name: nameController.text.trim(),
-                            parentName: parentNameController.text.trim(),
-                            age: ageController.text.trim(),
-                            mobileNumber: mobileNumberController.text.trim(),
-                            image: image.value,
-                          );
+                              id: model?.id,
+                              name: nameController.text.trim(),
+                              parentName: parentNameController.text.trim(),
+                              age: ageController.text.trim(),
+                              mobileNumber: mobileNumberController.text.trim(),
+                              image: image.value);
                           await context
                               .read<StudentModelProvider>()
                               .addOrEdit(student, action == ActionType.edit);
                           Navigator.of(context).pop();
+                          snacMasage(context, 'Student Data Updated');
                           clear();
                         }
                       }
