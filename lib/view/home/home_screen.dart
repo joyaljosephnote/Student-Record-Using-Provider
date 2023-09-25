@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_provider/constants/colors.dart';
 import 'package:student_provider/constants/space.dart';
+import 'package:student_provider/controller/provider/student_model_provider.dart';
 import 'package:student_provider/view/add_and_edit/student_add_and_edit_screen.dart';
 import 'package:student_provider/view/home/widget/card.dart';
 
@@ -11,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController searchController = TextEditingController();
+    context.read<StudentModelProvider>().getStudents('');
     return Scaffold(
       backgroundColor: kgreenAccent,
       appBar: AppBar(
@@ -37,13 +40,19 @@ class HomeScreen extends StatelessWidget {
               ),
               kheight5,
               Expanded(
-                  child: GridView.builder(
-                itemCount: 10,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, mainAxisSpacing: 1, crossAxisSpacing: 1),
-                itemBuilder: (context, index) {
-                  return const CardWidget();
-                },
+                  child: Consumer<StudentModelProvider>(
+                builder: (context, value, child) => GridView.builder(
+                  itemCount: value.studentList.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 1,
+                      crossAxisSpacing: 1),
+                  itemBuilder: (context, index) {
+                    return CardWidget(
+                      studentModel: value.studentList[index],
+                    );
+                  },
+                ),
               )),
             ],
           ),

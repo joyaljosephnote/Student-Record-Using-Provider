@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:student_provider/constants/colors.dart';
 import 'package:student_provider/constants/style.dart';
+import 'package:student_provider/model/student_model.dart';
 import 'package:student_provider/view/add_and_edit/student_add_and_edit_screen.dart';
 
 class CardWidget extends StatelessWidget {
-  const CardWidget({super.key});
+  const CardWidget({super.key, required this.studentModel});
+  final Student studentModel;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
+      onTap: () {
+        Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => StudentAddAndEdit(action: ActionType.edit),
-          )),
+            builder: (context) =>
+                StudentAddAndEdit(action: ActionType.edit, model: studentModel),
+          ),
+        );
+        setData(studentModel);
+      },
       child: Card(
         color: kblack12,
         elevation: 0,
@@ -29,11 +36,12 @@ class CardWidget extends StatelessWidget {
               radius: 50,
               child: Container(
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
                   shape: BoxShape.rectangle,
                   image: DecorationImage(
-                    image: AssetImage("assets/images/studentImage.png"),
-                    fit: BoxFit.contain,
+                    image: FileImage(studentModel.image!),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -42,7 +50,8 @@ class CardWidget extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: SizedBox(
                   child: Text(
-                'Name : Joyal',
+                overflow: TextOverflow.ellipsis,
+                "Name : ${studentModel.name}",
                 style: text14BlackBold,
               )),
             ),

@@ -20,10 +20,10 @@ enum ActionType {
 }
 
 ValueNotifier<File?> image = ValueNotifier<File?>(null);
-final TextEditingController nameController = TextEditingController();
-final TextEditingController parentNameController = TextEditingController();
-final TextEditingController ageController = TextEditingController();
-final TextEditingController mobileNumberController = TextEditingController();
+TextEditingController nameController = TextEditingController();
+TextEditingController parentNameController = TextEditingController();
+TextEditingController ageController = TextEditingController();
+TextEditingController mobileNumberController = TextEditingController();
 
 class StudentAddAndEdit extends StatelessWidget {
   StudentAddAndEdit({super.key, required this.action, this.model});
@@ -95,19 +95,37 @@ class StudentAddAndEdit extends StatelessWidget {
                     backgroundColor: const Color.fromARGB(255, 18, 133, 195),
                     foregroundColor: Colors.white,
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        final student = Student(
-                          name: nameController.text.trim(),
-                          parentName: parentNameController.text.trim(),
-                          age: ageController.text.trim(),
-                          mobileNumber: mobileNumberController.text.trim(),
-                          image: image.value,
-                        );
-                        await context
-                            .read<StudentModelProvider>()
-                            .addOrEdit(student, action == ActionType.edit);
-                        Navigator.of(context).pop();
-                        clear();
+                      if (action == ActionType.add) {
+                        if (_formKey.currentState!.validate()) {
+                          final student = Student(
+                            name: nameController.text.trim(),
+                            parentName: parentNameController.text.trim(),
+                            age: ageController.text.trim(),
+                            mobileNumber: mobileNumberController.text.trim(),
+                            image: image.value,
+                          );
+                          await context
+                              .read<StudentModelProvider>()
+                              .addOrEdit(student, action == ActionType.edit);
+                          Navigator.of(context).pop();
+                          clear();
+                        }
+                      } else {
+                        if (_formKey.currentState!.validate()) {
+                          final student = Student(
+                            id: model?.id,
+                            name: nameController.text.trim(),
+                            parentName: parentNameController.text.trim(),
+                            age: ageController.text.trim(),
+                            mobileNumber: mobileNumberController.text.trim(),
+                            image: image.value,
+                          );
+                          await context
+                              .read<StudentModelProvider>()
+                              .addOrEdit(student, action == ActionType.edit);
+                          Navigator.of(context).pop();
+                          clear();
+                        }
                       }
                     },
                     label: action == ActionType.add
@@ -129,20 +147,20 @@ class StudentAddAndEdit extends StatelessWidget {
       image.value = File(img.path);
     }
   }
+}
 
-  setData(Student model) {
-    nameController.text = model.name;
-    parentNameController.text = model.parentName;
-    ageController.text = model.age;
-    mobileNumberController.text = model.mobileNumber;
-    image.value = model.image;
-  }
+setData(Student studentModel) {
+  nameController.text = studentModel.name;
+  parentNameController.text = studentModel.parentName;
+  ageController.text = studentModel.age;
+  mobileNumberController.text = studentModel.mobileNumber;
+  image.value = studentModel.image;
+}
 
-  clear() {
-    nameController.text = '';
-    parentNameController.text = '';
-    ageController.text = '';
-    mobileNumberController.text = '';
-    image.value = null;
-  }
+clear() {
+  nameController.text = '';
+  parentNameController.text = '';
+  ageController.text = '';
+  mobileNumberController.text = '';
+  image.value = null;
 }
