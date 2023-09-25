@@ -6,14 +6,14 @@ import 'package:student_provider/constants/colors.dart';
 import 'package:student_provider/constants/space.dart';
 import 'package:student_provider/constants/style.dart';
 import 'package:student_provider/controller/validator.dart';
+import 'package:student_provider/view/add_and_edit/widget/student_profile_image.dart';
 
 enum ActionType {
   add,
   edit,
 }
 
-File? imageFile;
-final picker = ImagePicker();
+ValueNotifier<File?> image = ValueNotifier<File?>(null);
 
 class RegisterAddAndEditScreen extends StatelessWidget {
   final ActionType action;
@@ -38,40 +38,18 @@ class RegisterAddAndEditScreen extends StatelessWidget {
               key: _formKey,
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () async {
-                      await pickImage();
+                  ValueListenableBuilder(
+                    valueListenable: image,
+                    builder: (context, value, child) {
+                      return GestureDetector(
+                          onTap: () async {
+                            await pickImage();
+                          },
+                          child: image.value != null
+                              ? StudentProfileImage(
+                                  radius: 60, image: image.value)
+                              : const DefaultStudentProfileImage());
                     },
-                    child: imageFile != null
-                        ? CircleAvatar(
-                            radius: 60,
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                shape: BoxShape.rectangle,
-                                image: DecorationImage(
-                                  image: FileImage(imageFile!),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          )
-                        : CircleAvatar(
-                            backgroundColor: kwhite,
-                            radius: 60,
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/images/studentImage.png"),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          ),
                   ),
                   kheight30,
                   TextFormField(
@@ -124,7 +102,7 @@ class RegisterAddAndEditScreen extends StatelessWidget {
   Future<void> pickImage() async {
     XFile? img = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (img != null) {
-      imageFile = File(img.path);
+      image.value = File(img.path);
     }
   }
 }
